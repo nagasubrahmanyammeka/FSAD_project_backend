@@ -19,14 +19,14 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
-    // ─── POST /api/feedbacks ─────────────────────────────────────────
+    
     @PostMapping
     @Operation(summary = "Submit feedback (open — no auth required)")
     public ResponseEntity<FeedbackDTO> submitFeedback(@Valid @RequestBody FeedbackDTO dto) {
         return ResponseEntity.ok(feedbackService.submitFeedback(dto));
     }
 
-    // ─── GET /api/feedbacks ──────────────────────────────────────────
+    
     @GetMapping
     @Operation(summary = "Get all feedbacks (admin view)")
     public ResponseEntity<List<FeedbackDTO>> getAllFeedbacks() {

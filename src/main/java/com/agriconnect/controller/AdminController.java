@@ -28,7 +28,7 @@ public class AdminController {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(adminService.getAllUsers());
     }
- // CREATE USER
+    // CREATE USER
     @PostMapping("/users")
     @Operation(summary = "Create a new user (admin only)")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
@@ -44,7 +44,7 @@ public class AdminController {
         return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
     }
 
-    // ⭐ FIX: UPDATE USER (THIS WAS MISSING)
+    // UPDATE USER 
     @PutMapping("/users/{id}")
     @Operation(summary = "Update user by ID (admin only)")
     public ResponseEntity<UserDTO> updateUser(

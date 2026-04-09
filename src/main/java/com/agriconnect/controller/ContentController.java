@@ -20,7 +20,7 @@ public class ContentController {
 
     private final ContentService contentService;
 
-    // ─── POST /api/content ───────────────────────────────────────────
+    
     @PostMapping
     @SecurityRequirement(name = "BearerAuth")
     @Operation(summary = "Upload new content (expert / admin only)")
@@ -28,14 +28,14 @@ public class ContentController {
         return ResponseEntity.ok(contentService.createContent(dto));
     }
 
-    // ─── GET /api/content ────────────────────────────────────────────
+    
     @GetMapping
     @Operation(summary = "Get all content (public)")
     public ResponseEntity<List<ContentDTO>> getAllContent() {
         return ResponseEntity.ok(contentService.getAllContent());
     }
 
-    // ─── DELETE /api/content/{id} ────────────────────────────────────
+    
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "BearerAuth")
     @Operation(summary = "Delete content by ID (admin / expert only)")

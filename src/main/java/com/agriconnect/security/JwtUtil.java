@@ -21,7 +21,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    // ✅ Generate JWT Token
     public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
@@ -32,17 +31,14 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ✅ Extract Username from Token
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
     }
 
-    // ✅ Extract Role from Token
     public String extractRole(String token) {
         return (String) getClaims(token).get("role");
     }
 
-    // ✅ Validate Token
     public boolean validateToken(String token, String username) {
         try {
             String tokenUsername = extractUsername(token);
@@ -52,7 +48,6 @@ public class JwtUtil {
         }
     }
 
-    // ✅ Check Token Expiry
     private boolean isTokenExpired(String token) {
         return getClaims(token).getExpiration().before(new Date());
     }

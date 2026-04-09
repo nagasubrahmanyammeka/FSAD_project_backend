@@ -14,25 +14,22 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ─── 404 Not Found ───────────────────────────────────────────────
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // ─── 409 Conflict ────────────────────────────────────────────────
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleConflict(UserAlreadyExistsException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    // ─── 401 Unauthorized ────────────────────────────────────────────
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorized(InvalidCredentialsException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
-    // ─── 400 Validation Errors ───────────────────────────────────────
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
@@ -47,14 +44,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    // ─── 500 Internal Server Error ────────────────────────────────────
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneral(Exception ex) {
         return buildError(HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred: " + ex.getMessage());
     }
 
-    // ─── Helper ──────────────────────────────────────────────────────
     private ResponseEntity<Map<String, Object>> buildError(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now().toString());
