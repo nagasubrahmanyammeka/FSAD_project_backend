@@ -34,6 +34,7 @@ public class SecurityConfig {
     // ─── Endpoints open without Auth ──────────────────────────────────
     private static final String[] PUBLIC_URLS = {
             "/api/auth/**",
+            "/api/otp/**",
             "/api/guidance",           // POST guidance (any user)
             "/api/guidance/**",
             "/api/feedbacks",          // POST feedback

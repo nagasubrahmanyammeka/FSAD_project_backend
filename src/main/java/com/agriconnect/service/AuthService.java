@@ -19,12 +19,15 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
 
     // ─── REGISTER ─────────────────────────────────────────────────────
     public AuthResponseDTO register(RegisterRequestDTO dto) {
+
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new UserAlreadyExistsException("Username '" + dto.getUsername() + "' is already taken.");
         }
+
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistsException("Email '" + dto.getEmail() + "' is already registered.");
         }
@@ -41,6 +44,21 @@ public class AuthService {
 
         User saved = userRepository.save(user);
 
+        System.out.println("✅ User saved: " + saved.getEmail());
+
+        try {
+            System.out.println("📩 Sending registration email...");
+            
+            emailService.sendRegistrationSuccess(
+                    saved.getEmail(),
+                    saved.getName()
+            );
+
+            System.out.println("✅ Email sent successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace(); // 🔥 CRITICAL
+        }
         String token = jwtUtil.generateToken(saved.getUsername(), saved.getRole());
         UserDTO userDTO = modelMapper.map(saved, UserDTO.class);
 

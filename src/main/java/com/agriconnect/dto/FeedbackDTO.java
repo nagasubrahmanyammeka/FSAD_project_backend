@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class FeedbackDTO {
     private Long id;
-
+    private Long userId;
     @NotBlank(message = "Name is required")
     private String name;
 
