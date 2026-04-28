@@ -2,7 +2,6 @@ package com.agriconnect.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,15 +16,19 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String author;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String fileName;
 
-    @Column(nullable = false, updatable = false)
+    private String fileType;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB") // 🔥 IMPORTANT
+    private byte[] data;
+
     private LocalDateTime createdAt;
 
     @PrePersist

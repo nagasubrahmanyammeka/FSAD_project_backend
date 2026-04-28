@@ -39,7 +39,8 @@ public class SecurityConfig {
             "/api/guidance/**",
             "/api/feedbacks",          // POST feedback
             "/api/feedbacks/**",
-            "/api/content",            // GET all content
+            "/api/content/**", 
+            "/api/sessions/**",// GET all content
             "/api/products",           // GET products
             "/v3/api-docs/**",
             "/swagger-ui/**",

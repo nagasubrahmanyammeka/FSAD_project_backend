@@ -1,13 +1,14 @@
 package com.agriconnect.controller;
 
 import com.agriconnect.dto.ContentDTO;
+import com.agriconnect.entity.Content;
 import com.agriconnect.service.ContentService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -15,32 +16,46 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/content")
 @RequiredArgsConstructor
-@Tag(name = "Content", description = "Expert-uploaded educational content")
+@CrossOrigin("*")
 public class ContentController {
 
     private final ContentService contentService;
 
-    
-    @PostMapping
-    @SecurityRequirement(name = "BearerAuth")
-    @Operation(summary = "Upload new content (expert / admin only)")
-    public ResponseEntity<ContentDTO> createContent(@RequestBody ContentDTO dto) {
-        return ResponseEntity.ok(contentService.createContent(dto));
+    // 🔥 UPLOAD (NO SECURITY ISSUE)
+    @PostMapping("/upload")
+    public ResponseEntity<ContentDTO> uploadContent(
+            @RequestParam("author") String author,
+            @RequestParam("description") String description,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return ResponseEntity.ok(
+                contentService.createContent(author, description, file)
+        );
     }
 
-    
+    // GET ALL
     @GetMapping
-    @Operation(summary = "Get all content (public)")
     public ResponseEntity<List<ContentDTO>> getAllContent() {
         return ResponseEntity.ok(contentService.getAllContent());
     }
 
-    
+    // DOWNLOAD
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
+
+        Content file = contentService.getFile(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + file.getFileName() + "\"")
+                .body(file.getData());
+    }
+
+    // DELETE
     @DeleteMapping("/{id}")
-    @SecurityRequirement(name = "BearerAuth")
-    @Operation(summary = "Delete content by ID (admin / expert only)")
     public ResponseEntity<Map<String, String>> deleteContent(@PathVariable Long id) {
         contentService.deleteContent(id);
-        return ResponseEntity.ok(Map.of("message", "Content deleted successfully"));
+        return ResponseEntity.ok(Map.of("message", "Deleted"));
     }
 }
