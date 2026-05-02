@@ -79,7 +79,8 @@ public class SecurityConfig {
                 "http://localhost:5173",
                 "http://localhost:3000",
                 "http://localhost:5000",
-                "http://agriconnect-alpha-two.vercel.app"
+                "http://agriconnect-alpha-two.vercel.app",
+                "https://fsadprojectfrontend-production-a807.up.railway.app"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
